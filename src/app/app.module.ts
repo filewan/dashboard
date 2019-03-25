@@ -35,6 +35,7 @@ import { AvatarModule } from 'ngx-avatar';
 import { MomentModule } from 'angular2-moment';
 import { NumeralModule } from 'ngx-numeral';
 import { IntercomModule } from 'ng-intercom';
+import { FileSelectDirective } from 'ng2-file-upload';
 // import { TakeActionComponent } from './components/take-action/take-action.component';
 // import { MetricsChangeComponent } from './components/metrics-change/metrics-change.component';
 // import { LineComponent } from './components/line/line.component';
@@ -160,6 +161,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
+    FileSelectDirective,
     // TakeActionComponent,
     // MetricsChangeComponent,
     // LineComponent,

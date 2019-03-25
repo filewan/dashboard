@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { KycService } from '../../services/kyc.service';
 import { HttpService } from '../../services/http.service';
 import { environment } from '../../../environments/environment';
+import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 
 @Component({
   selector: 'app-kyc',
@@ -9,6 +10,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./kyc.component.css']
 })
 export class KycComponent implements OnInit, OnDestroy {
+  selected = 'pan';
+  public uploader: FileUploader = new FileUploader({url: 'http://localhost:8001/document/upload', itemAlias: 'photo'});
   userData = {
     pan: '',
     name: '',
@@ -103,7 +106,27 @@ export class KycComponent implements OnInit, OnDestroy {
     console.log('stage', this.stage);
     console.log('authrep', this.authorizedRep);
     console.log('viewActive', this.viewActive);
-  }
+    // this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+    //   form.append('type', this.fileType); //note comma separating key and value
+    //   form.append('name', `test`);
+    //  };
 
+    // this.uploader.authToken = `${localStorage.getItem('token')}`;
+    // this.uploader.options.additionalParameter = {
+    // 'fileType': this.selected,
+    // 'pan': this.userData.pan,
+    // };
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => {
+      this.uploader.options.additionalParameter = {
+            'fileType': this.selected,
+            'pan': this.userData.pan,
+        };
+    };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        console.log('ImageUpload:uploaded:', item, status, response);
+        alert('File uploaded successfully');
+    };
+  }
 
 }
