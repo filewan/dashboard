@@ -12,7 +12,7 @@ import { AuthenticationService } from '../../services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  rolePressed;
   loggingIn = false;
   model: any = {};
   error = '';

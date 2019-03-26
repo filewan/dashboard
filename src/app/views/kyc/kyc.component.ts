@@ -16,7 +16,7 @@ export class KycComponent implements OnInit, OnDestroy {
   documentsHolder = [];
   typeHolder = {};
 
-  public uploader: FileUploader = new FileUploader({url: 'http://localhost:8001/document/upload', itemAlias: 'photo'});
+  public uploader: FileUploader = new FileUploader({url: 'https://pilot.filewan.com:8001/document/upload', itemAlias: 'photo'});
   userData = {
     pan: '',
     name: '',
@@ -44,7 +44,7 @@ export class KycComponent implements OnInit, OnDestroy {
     //  console.log(filename);
     //  console.log(`http://localhost:8001/document/download?f=${filename}`);
     //  console.log('hitting');
-     const url = `https://pilot.filewan.com/document/download?f=${filename}`;
+     const url = `https://pilot.filewan.com:8001/document/download?f=${filename}`;
     // saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
     this.fileservice.downloadReport(url).subscribe(
       data => {
