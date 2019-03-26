@@ -42,13 +42,13 @@ export class KycComponent implements OnInit, OnDestroy {
    }
    downloadFile(filename) {
     //  console.log(filename);
-     console.log(`http://localhost:8001/document/download?f=${filename}`);
-     console.log('hitting');
-     const url= `http://localhost:8001/document/download?f=${filename}`;
+    //  console.log(`http://localhost:8001/document/download?f=${filename}`);
+    //  console.log('hitting');
+     const url = `https://pilot.filewan.com/document/download?f=${filename}`;
     // saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
     this.fileservice.downloadReport(url).subscribe(
       data => {
-        console.log('reaching just before save');
+        // console.log('reaching just before save');
         saveAs(data, filename);
       },
       err => {
@@ -90,14 +90,14 @@ export class KycComponent implements OnInit, OnDestroy {
           this.processDocumentList();
         } else {
           this.kycService.updateStage(2);
-          console.log('updating stage', this.stage);
+          // console.log('updating stage', this.stage);
         }
       },
       err => {
         console.log(err)
         if (err.error['success'] === false) {
         this.kycService.updateStage(2);
-          console.log('updating stage', this.stage);
+          // console.log('updating stage', this.stage);
         } else {
           console.log('Error Occured');
         }
@@ -143,9 +143,9 @@ export class KycComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.kycService.initAll();
-    console.log('stage', this.stage);
-    console.log('authrep', this.authorizedRep);
-    console.log('viewActive', this.viewActive);
+    // console.log('stage', this.stage);
+    // console.log('authrep', this.authorizedRep);
+    // console.log('viewActive', this.viewActive);
     // this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
     //   form.append('type', this.fileType); //note comma separating key and value
     //   form.append('name', `test`);
@@ -168,7 +168,7 @@ export class KycComponent implements OnInit, OnDestroy {
       form.append('pan', this.userData.pan);
      };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        console.log('ImageUpload:uploaded:', item, status, response);
+        // console.log('ImageUpload:uploaded:', item, status, response);
         this.httpService.callApi(environment.services.profile.resources.read.method,
           environment.url + ':' + environment.services.profile.port + '/' +
           environment.services.profile.resources.read.endpoint, {pan: this.userData.pan})

@@ -51,7 +51,7 @@ export class CollapseSidenavComponent implements OnInit {
       {
         'name': 'Kyc',
         'routeLink': '/kyc',
-        'icon': 'settings_input_composite',
+        'icon': 'fingerprint',
         'subMenu': []
       },
       // {

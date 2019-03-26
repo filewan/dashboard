@@ -104,18 +104,20 @@
       </mat-card>
     </div>
       <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="stage==3">
-          <h4>Available Documents</h4>
+          <h4 style="font-size: 14px;">Available Documents</h4>
           <mat-card class="profileCard" *ngIf="typeHolder.pan">
             <mat-card-header style="margin-bottom: 18px;">PAN</mat-card-header>
             <mat-divider [inset]="false"></mat-divider>
             <mat-card-content >
                 <mat-nav-list>
                     <mat-list-item *ngFor="let f of typeHolder.pan">
-                       <a matLine href="" download="{{f.path}}">{{ f.path }}</a>
-                       <button mat-icon-button (click)="downloadFile(f.path)">
-                          <mat-icon>download</mat-icon>
-                       </button>
-                    </mat-list-item>
+                       <!-- <a matLine href="">{{ f.path }}</a> -->
+                       <p matLine>{{ f.path }}</p>
+                       <button mat-raised-button (click)="downloadFile(f.path)">
+                          Download
+                           <!-- <mat-icon>info</mat-icon> -->
+                        </button>
+                   </mat-list-item>
                   </mat-nav-list>
             </mat-card-content>
           </mat-card>
@@ -125,11 +127,13 @@
               <mat-card-content >
                   <mat-nav-list>
                       <mat-list-item *ngFor="let f of typeHolder.aadhaar">
-                         <a matLine href="" download="{{f.path}}">{{ f.path }}</a>
-                         <button mat-icon-button (click)="downloadFile(f.path)">
-                            <mat-icon>download</mat-icon>
-                         </button>
-                      </mat-list-item>
+                         <!-- <a matLine href="">{{ f.path }}</a> -->
+                         <p matLine>{{ f.path }}</p>
+                         <button mat-raised-button (click)="downloadFile(f.path)">
+                            Download
+                             <!-- <mat-icon>info</mat-icon> -->
+                          </button>
+                       </mat-list-item>
                     </mat-nav-list>
               </mat-card-content>
             </mat-card>
@@ -139,11 +143,13 @@
               <mat-card-content >
                   <mat-nav-list>
                       <mat-list-item *ngFor="let f of typeHolder.addproof">
-                         <a matLine href="" download="{{f.path}}">{{ f.path }}</a>
-                         <button mat-icon-button (click)="downloadFile(f.path)">
-                            <mat-icon>download</mat-icon>
-                         </button>
-                      </mat-list-item>
+                         <!-- <a matLine href="" download="{{f.path}}">{{ f.path }}</a> -->
+                         <p matLine>{{ f.path }}</p>
+                         <button mat-raised-button (click)="downloadFile(f.path)">
+                            Download
+                             <!-- <mat-icon>info</mat-icon> -->
+                          </button>
+                       </mat-list-item>
                     </mat-nav-list>
               </mat-card-content>
             </mat-card>
@@ -153,10 +159,12 @@
               <mat-card-content >
                   <mat-nav-list>
                       <mat-list-item *ngFor="let f of typeHolder.photo">
-                         <a matLine href="" download="{{f.path}}" (click)="downloadFile(f.path)">{{ f.path }}</a>
-                         <!-- <button mat-icon-button (click)="downloadFile(f.path)">
-                            <mat-icon>download</mat-icon>
-                         </button> -->
+                         <!-- <p matLine href="" download="{{f.path}}">{{ f.path }}</p> -->
+                         <p matLine>{{ f.path }}</p>
+                         <button mat-raised-button (click)="downloadFile(f.path)">
+                           Download
+                            <!-- <mat-icon>info</mat-icon> -->
+                         </button>
                       </mat-list-item>
                     </mat-nav-list>
               </mat-card-content>
