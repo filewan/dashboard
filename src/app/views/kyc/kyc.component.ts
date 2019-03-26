@@ -3,6 +3,7 @@ import { KycService } from '../../services/kyc.service';
 import { HttpService } from '../../services/http.service';
 import { environment } from '../../../environments/environment';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { saveAs } from 'file-saver/FileSaver';
 
 @Component({
   selector: 'app-kyc',
@@ -11,6 +12,9 @@ import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upl
 })
 export class KycComponent implements OnInit, OnDestroy {
   selected = 'pan';
+  documentsHolder = [];
+  typeHolder = {};
+
   public uploader: FileUploader = new FileUploader({url: 'http://localhost:8001/document/upload', itemAlias: 'photo'});
   userData = {
     pan: '',
@@ -35,7 +39,26 @@ export class KycComponent implements OnInit, OnDestroy {
       this.viewActive = active;
     });
    }
-
+   downloadFile(filename) {
+     console.log(filename);
+     console.log(`http://localhost:8001/document/download?f=${filename}`);
+     console.log('hitting');
+    saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
+   }
+  processDocumentList() {
+    console.log('Inside function', this.documentsHolder);
+    if (this.documentsHolder) {
+      console.log('inside')
+      this.documentsHolder.forEach((filename) => {
+        if (!(this.typeHolder[filename.type])) {
+          this.typeHolder[filename.type] = [filename];
+        } else {
+          this.typeHolder[filename.type].push(filename);
+        }
+      });
+      console.log('after typeHolder', this.typeHolder);
+    }
+  }
   buttonPressed() {
     if (this.stage === 1) {
       // check logic TODO
@@ -50,6 +73,8 @@ export class KycComponent implements OnInit, OnDestroy {
           delete res['profile'].__v;
           this.userData = res['profile'];
           this.buttonName = 'Save';
+          this.documentsHolder = res['profile']['documents'];
+          this.processDocumentList();
         } else {
           this.kycService.updateStage(2);
           console.log('updating stage', this.stage);
@@ -117,12 +142,16 @@ export class KycComponent implements OnInit, OnDestroy {
     // 'pan': this.userData.pan,
     // };
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
-    this.uploader.onAfterAddingFile = (file) => {
-      this.uploader.options.additionalParameter = {
-            'fileType': this.selected,
-            'pan': this.userData.pan,
-        };
-    };
+    // this.uploader.onAfterAddingFile = (file) => {
+    //   this.uploader.options.additionalParameter = {
+    //         'fileType': this.selected,
+    //         'pan': this.userData.pan,
+    //     };
+    // };
+    this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+      form.append('filetype', this.selected); //note comma separating key and value
+      form.append('pan', this.userData.pan);
+     };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         console.log('ImageUpload:uploaded:', item, status, response);
         alert('File uploaded successfully');
