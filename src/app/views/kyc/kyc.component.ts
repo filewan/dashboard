@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { KycService } from '../../services/kyc.service';
 import { HttpService } from '../../services/http.service';
+import { FileService } from '../../services/file.service';
 import { environment } from '../../../environments/environment';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 import { saveAs } from 'file-saver/FileSaver';
@@ -28,7 +29,7 @@ export class KycComponent implements OnInit, OnDestroy {
   stage;
   authorizedRep;
   viewActive;
-  constructor(private kycService: KycService, private httpService: HttpService) {
+  constructor(private kycService: KycService, private httpService: HttpService, private fileservice: FileService) {
     kycService.stage$.subscribe(stage => {
       this.stage = stage;
     });
@@ -40,13 +41,25 @@ export class KycComponent implements OnInit, OnDestroy {
     });
    }
    downloadFile(filename) {
-     console.log(filename);
+    //  console.log(filename);
      console.log(`http://localhost:8001/document/download?f=${filename}`);
      console.log('hitting');
-    saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
+     const url= `http://localhost:8001/document/download?f=${filename}`;
+    // saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
+    this.fileservice.downloadReport(url).subscribe(
+      data => {
+        console.log('reaching just before save');
+        saveAs(data, filename);
+      },
+      err => {
+        alert("Problem while downloading the file.");
+        console.error(err);
+      }
+    );
    }
   processDocumentList() {
     console.log('Inside function', this.documentsHolder);
+    this.typeHolder = {};
     if (this.documentsHolder) {
       console.log('inside')
       this.documentsHolder.forEach((filename) => {
@@ -113,6 +126,8 @@ export class KycComponent implements OnInit, OnDestroy {
         environment.services.profile.resources.update.endpoint, this.userData)
         .subscribe(res => {
           if (res['success'] === true) {
+            delete res['profile']._id;
+            delete res['profile'].__v;
             this.userData = res['profile'];
           }
         },
@@ -154,6 +169,18 @@ export class KycComponent implements OnInit, OnDestroy {
      };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         console.log('ImageUpload:uploaded:', item, status, response);
+        this.httpService.callApi(environment.services.profile.resources.read.method,
+          environment.url + ':' + environment.services.profile.port + '/' +
+          environment.services.profile.resources.read.endpoint, {pan: this.userData.pan})
+          .subscribe(res => {
+            if (res['success'] === true) {
+              this.documentsHolder = res['profile']['documents'];
+              this.processDocumentList();
+            }
+            },
+            err => {
+              console.log('Could not refresh the document list');
+            });
         alert('File uploaded successfully');
     };
   }
