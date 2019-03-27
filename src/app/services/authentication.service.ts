@@ -31,7 +31,6 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string, role: string): Observable<boolean> {
-    console.log(environment.url);
     return this.http.post(environment.url + ':' + environment.services.authentication.port + '/' +
                            environment.services.authentication.resources.update.endpoint, JSON.stringify({
       username: username,

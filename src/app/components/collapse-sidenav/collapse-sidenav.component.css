@@ -182,7 +182,6 @@ nav ul,nav li {
 
     .logo-1 {
         display : block;
-        content: url('/assets/marax-first_half_logo.svg');
         padding-left: 18px;
         padding-top: 21px;
         width: 20px;
@@ -191,7 +190,6 @@ nav ul,nav li {
     
     .logo {
         display: none;
-        content: url('/assets/marax-logo.png');
         width: 110px;
         padding-top: 21px !important;
         background: #475CFE;
@@ -199,7 +197,6 @@ nav ul,nav li {
 
     .main-menu:hover .logo-1 {
         display: none;
-        content: url('/assets/marax-first_half_logo.svg');
         width: 30px;
         height: 30px;
         background: #475CFE;
@@ -207,7 +204,6 @@ nav ul,nav li {
 
     .main-menu:hover .logo {
         display : block;
-        content: url('/assets/marax-logo.png');
         background: #475CFE;
         padding-left: 18px;
         padding-top: 18px;

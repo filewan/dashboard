@@ -16,7 +16,7 @@ export class KycComponent implements OnInit, OnDestroy {
   documentsHolder = [];
   typeHolder = {};
 
-  public uploader: FileUploader = new FileUploader({url: 'https://pilot.filewan.com:8001/document/upload', itemAlias: 'photo'});
+  public uploader: FileUploader = new FileUploader({url: environment.services.document.upload.url, itemAlias: 'photo'});
   userData = {
     pan: '',
     name: '',
@@ -44,7 +44,7 @@ export class KycComponent implements OnInit, OnDestroy {
     //  console.log(filename);
     //  console.log(`http://localhost:8001/document/download?f=${filename}`);
     //  console.log('hitting');
-     const url = `https://pilot.filewan.com:8001/document/download?f=${filename}`;
+     const url = `${environment.services.document.download.url}${filename}`;
     // saveAs(`http://localhost:8001/document/download?f=${filename}`, `${filename}`);
     this.fileservice.downloadReport(url).subscribe(
       data => {
@@ -52,16 +52,14 @@ export class KycComponent implements OnInit, OnDestroy {
         saveAs(data, filename);
       },
       err => {
-        alert("Problem while downloading the file.");
+        alert('Problem while downloading the file');
         console.error(err);
       }
     );
    }
   processDocumentList() {
-    console.log('Inside function', this.documentsHolder);
     this.typeHolder = {};
     if (this.documentsHolder) {
-      console.log('inside')
       this.documentsHolder.forEach((filename) => {
         if (!(this.typeHolder[filename.type])) {
           this.typeHolder[filename.type] = [filename];
@@ -69,12 +67,18 @@ export class KycComponent implements OnInit, OnDestroy {
           this.typeHolder[filename.type].push(filename);
         }
       });
-      console.log('after typeHolder', this.typeHolder);
+    }
+  }
+
+  panPressed() {
+    if (this.stage === 1) {
+      this.buttonPressed();
     }
   }
   buttonPressed() {
     if (this.stage === 1) {
       // check logic TODO
+      this.userData.pan = this.userData.pan.toUpperCase();
       this.buttonName = 'Create Customer';
       this.httpService.callApi(environment.services.profile.resources.read.method,
       environment.url + ':' + environment.services.profile.port + '/' +
