@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver/FileSaver';
   styleUrls: ['./kyc.component.css']
 })
 export class KycComponent implements OnInit, OnDestroy {
+  @Input() typeList = [];
   selected = 'pan';
   documentsHolder = [];
   typeHolder = {};
@@ -40,6 +41,21 @@ export class KycComponent implements OnInit, OnDestroy {
       this.viewActive = active;
     });
    }
+
+   getfileTypes() {
+    this.httpService.callApi('POST', environment.services.document.uniqueType.url, null)
+      .subscribe(res => {
+        this.typeList = res.types;
+      },
+      err => {
+        if (err.error['success'] === false) {
+          // console.log('updating stage', this.stage);
+        } else {
+          console.log('Error Occured');
+        }
+      });
+   }
+
    downloadFile(filename) {
     //  console.log(filename);
     //  console.log(`http://localhost:8001/document/download?f=${filename}`);
@@ -147,6 +163,7 @@ export class KycComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.kycService.initAll();
+    this.getfileTypes();
     // console.log('stage', this.stage);
     // console.log('authrep', this.authorizedRep);
     // console.log('viewActive', this.viewActive);

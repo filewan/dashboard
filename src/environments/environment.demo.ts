@@ -35,7 +35,10 @@ export const environment = {
             },
             upload: {
                 url: 'http://localhost:8001/document/upload'
-            }
+            },
+            uniqueType: {
+                url: 'http://localhost:8001/profile/type'
+            },
         }
 
     }

@@ -84,10 +84,10 @@
                 <mat-label>Document type</mat-label>
                 <mat-select [(value)]="selected">
                   <mat-option>None</mat-option>
-                  <mat-option value="pan">PAN</mat-option>
-                  <mat-option value="aadhaar">Aadhaar</mat-option>
+                  <mat-option *ngFor="let a of typeList" [value]="a">{{a}}</mat-option>
+                  <!-- <mat-option value="aadhaar">Aadhaar</mat-option>
                   <mat-option value="addproof">Address Proof</mat-option>
-                  <mat-option value="photo">Photograph</mat-option>
+                  <mat-option value="photo">Photograph</mat-option> -->
                 </mat-select>
               </mat-form-field>
                 <input type="file" name="photo" ng2FileSelect [uploader]="uploader" style="margin-right: 200px;" />
