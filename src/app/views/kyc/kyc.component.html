@@ -83,14 +83,28 @@
               <mat-form-field class="form-field">
                 <mat-label>Document type</mat-label>
                 <mat-select [(value)]="selected">
-                  <mat-option>None</mat-option>
+                  <mat-option value="others">Others</mat-option>
                   <mat-option *ngFor="let a of typeList" [value]="a">{{a}}</mat-option>
                   <!-- <mat-option value="aadhaar">Aadhaar</mat-option>
                   <mat-option value="addproof">Address Proof</mat-option>
                   <mat-option value="photo">Photograph</mat-option> -->
                 </mat-select>
               </mat-form-field>
-                <input type="file" name="photo" ng2FileSelect [uploader]="uploader" style="margin-right: 200px;" />
+              <mat-form-field *ngIf="selected=='others'" class="form-field">
+                <!-- <mat-label>New Document type</mat-label> -->
+                <input matInput type="text" placeholder="New Document Type" [(ngModel)]="newDocType" (keyup)="typePressed()">
+              </mat-form-field>
+              <mat-form-field class="form-field">
+                <input matInput [matDatepicker]="issueDatePicker" placeholder="Issue date" [(ngModel)]="issueDate">
+                <mat-datepicker-toggle matSuffix [for]="issueDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #issueDatePicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="form-field">
+                <input matInput [matDatepicker]="expiryDatePicker" placeholder="Expiry date" [(ngModel)]="expiryDate">
+                <mat-datepicker-toggle matSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #expiryDatePicker></mat-datepicker>
+              </mat-form-field>
+              <input type="file" name="photo" ng2FileSelect [uploader]="uploader" style="margin-right: 200px;" />
 
                 <button type="button" mat-raised-button color="accent"  (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" >
                       Upload a document
@@ -105,12 +119,12 @@
     </div>
       <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="stage==3">
           <h4 style="font-size: 14px;">Available Documents</h4>
-          <mat-card class="profileCard" *ngIf="typeHolder.pan">
-            <mat-card-header style="margin-bottom: 18px;">PAN</mat-card-header>
+          <mat-card class="profileCard" *ngFor="let item of typeHolder | keyvalue">
+            <mat-card-header style="margin-bottom: 18px;">{{item.key}}</mat-card-header>
             <mat-divider [inset]="false"></mat-divider>
             <mat-card-content >
                 <mat-nav-list>
-                    <mat-list-item *ngFor="let f of typeHolder.pan">
+                    <mat-list-item *ngFor="let f of item.value">
                        <!-- <a matLine href="">{{ f.path }}</a> -->
                        <p matLine>{{ f.path }}</p>
                        <button mat-raised-button (click)="downloadFile(f.path)">
@@ -121,54 +135,6 @@
                   </mat-nav-list>
             </mat-card-content>
           </mat-card>
-          <mat-card class="profileCard" *ngIf="typeHolder.aadhaar">
-              <mat-card-header style="margin-bottom: 18px;">Aadhaar</mat-card-header>
-              <mat-divider [inset]="false"></mat-divider>
-              <mat-card-content >
-                  <mat-nav-list>
-                      <mat-list-item *ngFor="let f of typeHolder.aadhaar">
-                         <!-- <a matLine href="">{{ f.path }}</a> -->
-                         <p matLine>{{ f.path }}</p>
-                         <button mat-raised-button (click)="downloadFile(f.path)">
-                            Download
-                             <!-- <mat-icon>info</mat-icon> -->
-                          </button>
-                       </mat-list-item>
-                    </mat-nav-list>
-              </mat-card-content>
-            </mat-card>
-            <mat-card class="profileCard" *ngIf="typeHolder.addproof">
-              <mat-card-header style="margin-bottom: 18px;">Address Proof</mat-card-header>
-              <mat-divider [inset]="false"></mat-divider>
-              <mat-card-content >
-                  <mat-nav-list>
-                      <mat-list-item *ngFor="let f of typeHolder.addproof">
-                         <!-- <a matLine href="" download="{{f.path}}">{{ f.path }}</a> -->
-                         <p matLine>{{ f.path }}</p>
-                         <button mat-raised-button (click)="downloadFile(f.path)">
-                            Download
-                             <!-- <mat-icon>info</mat-icon> -->
-                          </button>
-                       </mat-list-item>
-                    </mat-nav-list>
-              </mat-card-content>
-            </mat-card>
-            <mat-card class="profileCard" *ngIf="typeHolder.photo">
-              <mat-card-header style="margin-bottom: 18px;">Photograph</mat-card-header>
-              <mat-divider [inset]="false"></mat-divider>
-              <mat-card-content >
-                  <mat-nav-list>
-                      <mat-list-item *ngFor="let f of typeHolder.photo">
-                         <!-- <p matLine href="" download="{{f.path}}">{{ f.path }}</p> -->
-                         <p matLine>{{ f.path }}</p>
-                         <button mat-raised-button (click)="downloadFile(f.path)">
-                           Download
-                            <!-- <mat-icon>info</mat-icon> -->
-                         </button>
-                      </mat-list-item>
-                    </mat-nav-list>
-              </mat-card-content>
-            </mat-card>
 
           </div>
     

@@ -13,9 +13,13 @@ import { saveAs } from 'file-saver/FileSaver';
 })
 export class KycComponent implements OnInit, OnDestroy {
   @Input() typeList = [];
+  issueDate;
+  expiryDate;
+  newDocType = null;
   selected = 'pan';
   documentsHolder = [];
   typeHolder = {};
+  finalValue = null;
 
   public uploader: FileUploader = new FileUploader({url: environment.services.document.upload.url, itemAlias: 'photo'});
   userData = {
@@ -90,6 +94,10 @@ export class KycComponent implements OnInit, OnDestroy {
     if (this.stage === 1) {
       this.buttonPressed();
     }
+  }
+  typePressed() {
+    console.log(this.newDocType);
+    this.finalValue = this.newDocType;
   }
   buttonPressed() {
     if (this.stage === 1) {
@@ -185,8 +193,14 @@ export class KycComponent implements OnInit, OnDestroy {
     //     };
     // };
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('filetype', this.selected); //note comma separating key and value
+      if (!this.finalValue) {
+        this.finalValue = this.selected;
+      }
+      console.log('iss', this.issueDate);
+      console.log('ex', this.expiryDate);
+      form.append('filetype', this.finalValue); //note comma separating key and value
       form.append('pan', this.userData.pan);
+      this.finalValue = null;
      };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         // console.log('ImageUpload:uploaded:', item, status, response);
