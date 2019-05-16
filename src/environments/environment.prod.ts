@@ -35,7 +35,10 @@ export const environment = {
             },
             upload: {
                 url: 'https://pilot.filewan.com:8001/document/upload'
-            }
+            },
+            uniqueType: {
+                url: 'https://pilot.filewan.com:8001/profile/type'
+            },
         }
 
     }

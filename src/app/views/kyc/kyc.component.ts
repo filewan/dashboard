@@ -5,6 +5,8 @@ import { FileService } from '../../services/file.service';
 import { environment } from '../../../environments/environment';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 import { saveAs } from 'file-saver/FileSaver';
+import * as moment from 'moment';
+// import { MomentModule } from 'angular2-moment';
 
 @Component({
   selector: 'app-kyc',
@@ -195,6 +197,22 @@ export class KycComponent implements OnInit, OnDestroy {
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       if (!this.finalValue) {
         this.finalValue = this.selected;
+      }
+      if (this.issueDate) {
+      //   form.append('issuedate', {
+      //     day: Number(moment(this.issueDate).startOf('days').format('DD')),
+      //     month: Number(moment(this.issueDate).startOf('days').format('MM')),
+      //     year: Number(moment(this.issueDate).startOf('days').format('YYYY')),
+      // });
+      form.append('issuedate', moment(this.issueDate).startOf('days').format('YYYY-MM-DD'));
+      }
+      if (this.expiryDate) {
+      //   form.append('expiryDate', {
+      //     day: Number(moment(this.expiryDate).startOf('days').format('DD')),
+      //     month: Number(moment(this.expiryDate).startOf('days').format('MM')),
+      //     year: Number(moment(this.expiryDate).startOf('days').format('YYYY')),
+      // });
+      form.append('expirydate', moment(this.issueDate).startOf('days').format('YYYY-MM-DD'));
       }
       console.log('iss', this.issueDate);
       console.log('ex', this.expiryDate);
